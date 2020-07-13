@@ -1,0 +1,9 @@
+scale mysql server vertically and horizontally ?
+elastic search
+sensu ( linux stack monitoring )
+devops pipeline setup
+ddos prevention
+
+AWS Complete
+
+

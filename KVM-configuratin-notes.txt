@@ -1,0 +1,9 @@
+Edit xml file for kvm vm 
+
+To edit the configuration of a guest, use virsh edit <Name of guest VM> and the system will open the XML configuration in your default editor.
+
+To export the configuration of a guest, use virsh dumpxml <Name of guest VM>.
+
+virsh edit <Name of guest VM>
+virsh dumpxml <Name of guest VM>
+

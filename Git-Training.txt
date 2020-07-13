@@ -1,0 +1,285 @@
+Source : https://githowto.com/undoing_local_changes
+====================================================
+
+Git Basics to Advanced .
+
+
+Understanding that git works with the changes, not the files.
+
+
+yum -y install git
+sudo apt -y install git
+
+If its first time them setup git to know you name and email address. This information will be used when you will commit changes in the git repo.
+
+git config --global user.name "Your Name"
+git config --global user.email "your_email@whatever.com"
+
+
+git init
+git add filename
+git commit -m "First Comment"
+git status
+git log
+( Should you decide not to commit the change, the status command will remind you that you can use the git reset command to unstage these changes. )
+git reset
+git restore hello.html   ( recent change from last commit will be reverted back on the file )
+
+
+Understanding that git works with the changes, not the files.
+Git concentrates on the changes to a file, not the file itself. A git add file command does not tell git to add the file to the repository, but to note the current state of the file for it to be commited later.
+
+git log
+git log --pretty=oneline --max-count=2
+git log --pretty=oneline --since='5 minutes ago'
+git log --pretty=oneline --until='5 minutes ago'
+git log --pretty=oneline --author=<your name>
+git log --pretty=oneline --all
+git log --all --pretty=format:"%h %cd %s (%an)" --since='7 days ago'
+git log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short
+Let’s look at it in detail:
+
+    --pretty="..." defines the output format.
+    %h is the abbreviated hash of the commit
+    %d commit decorations (e.g. branch heads or tags)
+    %ad is the commit date
+    %s is the comment
+    %an is the name of the author
+    --graph tells git to display the commit tree in the form of an ASCII graph layout
+    --date=short keeps the date format short and nice
+    
+
+man  git-log 
+
+Both gitx (for Mac) and gitk (for any platform) can help to explore log history.
+
+
+
+=================
+
+
+You cn define git aliases under ~.gitconfig file or by using alias command
+
+
+vi .gitconfig
+[alias]
+  co = checkout
+  ci = commit
+  st = status
+  br = branch
+  hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+  type = cat-file -t
+  dump = cat-file -p
+  
+  
+ Or
+ alias gs='git status '
+alias ga='git add '
+alias gb='git branch '
+alias gc='git commit'
+alias gd='git diff'
+alias gco='git checkout '
+alias gk='gitk --all&'
+alias gx='gitx --all'
+
+alias got='git '
+alias get='git 
+
+
+
+
+When you run command 
+git checkout <hash>
+If you get this error.
+ error: Your local changes to the following files would be overwritten by checkout:
+
+
+then run this command
+git stash save  hello.html
+
+
+You can checkout to <hash> or to <branch-name> or <filename>
+
+git checkout <hash>
+git checkout <branch-name>
+git checkout <file-name>
+git branch <check branches >
+
+
+
+Git Tags  ( we can also use tags to check out into different state of file )
+========
+
+asif@AsifPC:~/gittraining/helo$ git tag v1
+asif@AsifPC:~/gittraining/helo$ git t
+tag    type   
+asif@AsifPC:~/gittraining/helo$ git tag 
+v1
+asif@AsifPC:~/gittraining/helo$ git checkout v1^
+Note: switching to 'v1^'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+HEAD is now at 9ca2178 Test commit without -m flag
+asif@AsifPC:~/gittraining/helo$ git tag v1-beta
+asif@AsifPC:~/gittraining/helo$ git tag
+v1
+v1-beta
+asif@AsifPC:~/gittraining/helo$ git checkout v1
+Previous HEAD position was 9ca2178 Test commit without -m flag
+HEAD is now at b328d2d test
+asif@AsifPC:~/gittraining/helo$ git tag
+v1
+v1-beta
+asif@AsifPC:~/gittraining/helo$ git checkout v1-beta 
+Previous HEAD position was b328d2d test
+HEAD is now at 9ca2178 Test commit without -m flag
+asif@AsifPC:~/gittraining/helo$ 
+
+
+ how to discard the working directory changes 
+ ============================================ ****************  ======================== *************************  =====
+ asif@AsifPC:~/gittraining/helo$ git checkout master
+Previous HEAD position was 9ca2178 Test commit without -m flag
+Switched to branch 'master'
+asif@AsifPC:~/gittraining/helo$ git branch
+  list
+* master
+asif@AsifPC:~/gittraining/helo$ vi hello.html 
+asif@AsifPC:~/gittraining/helo$ git status 
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   hello.html
+
+no changes added to commit (use "git add" and/or "git commit -a")
+asif@AsifPC:~/gittraining/helo$ git checkout hello.html
+Updated 1 path from the index
+asif@AsifPC:~/gittraining/helo$ git status 
+On branch master
+nothing to commit, working tree clean
+asif@AsifPC:~/gittraining/helo$ cat hello.html 
+Hello , Wolrd ! 
+Seond Line
+3rd line
+4th
+asif@AsifPC:~/gittraining/helo$
+
+==================================== ****************** ==================================== *************************
+
+how to undo changes that have been staged
+======================== ****************  =================
+ You can use any of these commands
+ git reset HEAD <filename> 
+ git restore <filename>
+ git restore --staged <filename>
+ 
+ or git checkout <filename>
+ 
+ 
+ (use "git restore <file>..." to discard changes in working directory)
+ 
+ 
+ 
+ asif@AsifPC:~/gittraining/helo$ git restore --staged hello.html
+asif@AsifPC:~/gittraining/helo$ git status 
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   hello.html
+
+no changes added to commit (use "git add" and/or "git commit -a")
+asif@AsifPC:~/gittraining/helo$ git restore hello.html
+asif@AsifPC:~/gittraining/helo$ git status 
+On branch master
+nothing to commit, working tree clean
+asif@AsifPC:~/gittraining/helo$ cat hello.html 
+Hello , Wolrd ! 
+Seond Line
+3rd line
+4th
+asif@AsifPC:~/gittraining/helo$ 
+
+================ **********  =========== *********** =========== *********** ========== ******** ==========
+
+how to undo commits to the local repository.
+===========================================
+vi hello.html
+git add .
+git commit -m 'test'
+
+to revert the last commit
+git revert HEAD
+cat hello.html
+
+
+=======================
+delete the branch's latest commits
+=========================
+git revert will revert the changes but will leave the commit comment in ths logs. we need to remove the traces from the logs
+
+
+create a new tag and rever to the old/other tag.
+git tag oops
+git tag
+git reset --hard v1
+git hist/log
+
+to see all the commits
+git hist --all
+
+
+Example:
+asif@AsifPC:~/gittraining/helo$ git tag oops
+asif@AsifPC:~/gittraining/helo$ git tag
+oops
+v1
+v1-beta
+asif@AsifPC:~/gittraining/helo$ git hist
+* 1257d48 2020-07-13 | Revert "Revert "Revert "wrong comment""" (HEAD -> master, tag: oops) [Muhammad Asif Shabbir]
+* 13d0bd2 2020-07-13 | Revert "Revert "wrong comment"" [Muhammad Asif Shabbir]
+* e77e280 2020-07-13 | Revert "wrong comment" [Muhammad Asif Shabbir]
+* 50f9ce8 2020-07-13 | wrong comment [Muhammad Asif Shabbir]
+* b328d2d 2020-07-12 | test (tag: v1) [Muhammad Asif Shabbir]
+* 9ca2178 2020-07-12 | Test commit without -m flag (tag: v1-beta) [Muhammad Asif Shabbir]
+* b25f475 2020-07-12 | second comment [Muhammad Asif Shabbir]
+* 1094dcc 2020-07-12 | First comment (list) [Muhammad Asif Shabbir]
+asif@AsifPC:~/gittraining/helo$ git reset --hard v1
+HEAD is now at b328d2d test
+asif@AsifPC:~/gittraining/helo$ git hist
+* b328d2d 2020-07-12 | test (HEAD -> master, tag: v1) [Muhammad Asif Shabbir]
+* 9ca2178 2020-07-12 | Test commit without -m flag (tag: v1-beta) [Muhammad Asif Shabbir]
+* b25f475 2020-07-12 | second comment [Muhammad Asif Shabbir]
+* 1094dcc 2020-07-12 | First comment (list) [Muhammad Asif Shabbir]
+asif@AsifPC:~/gittraining/helo$ git hist --all
+* 1257d48 2020-07-13 | Revert "Revert "Revert "wrong comment""" (tag: oops) [Muhammad Asif Shabbir]
+* 13d0bd2 2020-07-13 | Revert "Revert "wrong comment"" [Muhammad Asif Shabbir]
+* e77e280 2020-07-13 | Revert "wrong comment" [Muhammad Asif Shabbir]
+* 50f9ce8 2020-07-13 | wrong comment [Muhammad Asif Shabbir]
+| * dbbce1e 2020-07-13 | On master: hello.html (refs/stash) [Muhammad Asif Shabbir]
+|/| 
+| * 83f386c 2020-07-13 | index on master: b328d2d test [Muhammad Asif Shabbir]
+|/  
+* b328d2d 2020-07-12 | test (HEAD -> master, tag: v1) [Muhammad Asif Shabbir]
+* 9ca2178 2020-07-12 | Test commit without -m flag (tag: v1-beta) [Muhammad Asif Shabbir]
+* b25f475 2020-07-12 | second comment [Muhammad Asif Shabbir]
+* 1094dcc 2020-07-12 | First comment (list) [Muhammad Asif Shabbir]
+asif@AsifPC:~/gittraining/helo$ 
+
+==========
+

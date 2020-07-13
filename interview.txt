@@ -1,0 +1,31 @@
+Part1 : 
+apache clustering 
+3 machine
+
+1 - main
+2 - slave
+
+
+Part2: notification for bash script ..... 
+downtime notiifcation
+html files ...  backup every 5 min .. 
+
+success  == 
+fail == msg 
+
+
+Nginx Loadbalancer -- Round Robin
+
+Nginx  ( Load Balancer - round robin )
+
+Isci for data  X
+nfs used
+
+
+
+1: Apache 
+2: Apache
+
+
+
+
